@@ -8,8 +8,6 @@ import org.apache.storm.jdbc.mapper.JdbcMapper;
 import org.apache.storm.shade.com.google.common.collect.Maps;
 import org.apache.storm.tuple.ITuple;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -59,8 +57,7 @@ public class MyJdbcUtils {
 
     private static final ConnectionProvider CP;
     private static final JdbcMapper MAPPER;
-    private static final String INSERT_STMT;
-
+    public static final String INSERT_STMT ="INSERT INTO alerts (timestamp,name,type,count_json) values (?,?,?,?)";
 
 
     static {
@@ -74,13 +71,6 @@ public class MyJdbcUtils {
 
         String tableName = "alerts";
         MAPPER = new MemSqlJdbcMapper(tableName, CP);
-        PreparedStatement ps = null;
-        try {
-            ps = CP.getConnection().prepareStatement("INSERT INTO alerts (timestamp,name,type,count_json) values (?,?,?,?)");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        INSERT_STMT = ps.toString();
     }
 
     public static ConnectionProvider getConnectionProvider() {

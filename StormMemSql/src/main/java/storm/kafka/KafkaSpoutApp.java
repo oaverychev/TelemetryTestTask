@@ -29,7 +29,6 @@ public class KafkaSpoutApp {
         builder.setBolt("PersistenceBolt", new PersistenceBolt()).shuffleGrouping("IntermediateBolt");
 
         Config config = new Config();
-        config.registerSerialization(LogMessage.class, LogMessageSerializer.class);
 
         LocalCluster cluster = new LocalCluster();
 

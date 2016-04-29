@@ -36,13 +36,13 @@ public class MyJdbcUtils {
 
                 if(columnName.equals("name")) {
                     String value = obj.getName();
-                    columns.add(new Column(columnName, value, columnSqlType));
+                    columns.add(new Column(columnName, value.getBytes(), columnSqlType));
                 } else if(columnName.equals("type")) {
                     String value = obj.getType();
-                    columns.add(new Column(columnName, value, columnSqlType));
+                    columns.add(new Column(columnName, value.getBytes(), columnSqlType));
                 } else if(columnName.equals("count_json")) {
                     Integer value = obj.getCount();
-                    columns.add(new Column(columnName, value, columnSqlType));
+                    columns.add(new Column(columnName, value, 4));
                 } else if(columnName.equals("timestamp")) {
                     long value = obj.getUnixTimestamp();
                     columns.add(new Column(columnName, value, columnSqlType));
@@ -57,7 +57,7 @@ public class MyJdbcUtils {
 
     private static final ConnectionProvider CP;
     private static final JdbcMapper MAPPER;
-    public static final String INSERT_STMT ="INSERT INTO alerts (timestamp,name,type,count_json) values (?,?,?,?)";
+    public static final String INSERT_STMT ="INSERT INTO alerts (timestamp,name,type,count_json) values (?,?,?,?) on duplicate key update timestamp=values(timestamp), count_json=count_json+values(count_json);";
 
 
     static {

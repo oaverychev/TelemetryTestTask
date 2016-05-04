@@ -57,8 +57,9 @@ public class MyJdbcUtils {
 
     private static final ConnectionProvider CP;
     private static final JdbcMapper MAPPER;
-    public static final String INSERT_STMT ="INSERT INTO alerts (timestamp,name,type,count_json) values (?,?,?,?) on duplicate key update timestamp=values(timestamp), count_json=count_json+values(count_json);";
-
+    public static final String INSERT_STMT ="INSERT INTO alerts (timestamp,name,type,count_json) values (?,?,?,?) " +
+            "on duplicate key update timestamp=if(values(timestamp) > timestamp, values(timestamp), timestamp), " +
+            "count_json::count=count_json::count+values(count_json)";
 
     static {
 
